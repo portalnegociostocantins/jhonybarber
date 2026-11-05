@@ -1,0 +1,2 @@
+PACOTE COMPLETO.
+Descompacte e substitua/suba TODOS os arquivos no seu site (ou no GitHub), incluindo a pasta imagens/.

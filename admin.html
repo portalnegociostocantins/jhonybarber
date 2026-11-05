@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Jhony Barber</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- JSZip para geração automática de ZIP no navegador -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        body {
+            background-color: var(--bg-primary);
+            padding: 40px 20px;
+        }
+        .admin-page-container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+        .admin-header h1 {
+            font-family: var(--font-heading);
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+        .form-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .form-section h3 {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 6px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+        }
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .auth-box {
+            max-width: 400px;
+            margin: 100px auto;
+            background: var(--bg-card);
+            padding: 35px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .auth-box h2 {
+            font-family: var(--font-heading);
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        .team-admin-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .team-admin-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 120px;
+        }
+        .team-admin-preview {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .btn-upload-photo {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--accent);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        .btn-upload-photo:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #121212;
+        }
+        .team-admin-inputs {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .row-inputs {
+            display: flex;
+            gap: 12px;
+        }
+        .action-bar-item {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        .btn-item-save {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-item-save:hover {
+            background: #1ebe5d;
+        }
+        .btn-item-del {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-item-del:hover {
+            background: #d44444;
+        }
+        .btn-new-custom {
+            background: transparent;
+            border: 2px dashed var(--accent);
+            color: var(--accent);
+            padding: 14px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-new-custom:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+        .info-alert-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--accent);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Autenticação do Admin -->
+    <div id="admin-auth-container" class="auth-box">
+        <h2>Painel Admin</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Digite a senha para acessar as configurações:</p>
+        <input type="password" id="admin-password" class="form-control" placeholder="Senha do Administrador..." style="margin-bottom: 15px;">
+        <button id="btn-login-admin" class="btn btn-whatsapp" style="width: 100%;">Entrar no Painel</button>
+        <p id="login-error" style="color: #ff5555; margin-top: 15px; font-size: 0.85rem;"></p>
+        <a href="index.html" style="display: inline-block; margin-top: 20px; color: var(--text-muted); text-decoration: none; font-size: 0.85rem;"><i class="fas fa-arrow-left"></i> Voltar ao site público</a>
+    </div>
+
+    <!-- Conteúdo Principal do Painel -->
+    <div id="admin-dashboard" class="admin-page-container" style="display: none;">
+        <div class="admin-header">
+            <div>
+                <h1>Gestão da Landing Page</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Edite os barbeiros, fotos de rosto, textos, serviços e sincronize tudo com o site.</p>
+            </div>
+            <div>
+                <a href="index.html" class="btn btn-outline" style="font-size: 0.85rem; padding: 8px 16px;"><i class="fas fa-eye"></i> Ver Site Público</a>
+                <button id="btn-logout" class="btn btn-outline" style="font-size: 0.85rem; padding: 8px 16px; border-color: #ff5555; color: #ff5555; margin-left: 10px;">Sair</button>
+            </div>
+        </div>
+
+        <!-- Seção 0: Gerenciamento da Equipe / Profissionais -->
+        <div class="form-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0;"><i class="fas fa-user-gear"></i> Profissionais & Barbeiros (Nossa Equipe)</h3>
+                <button id="btn-add-team-member" class="btn-item-save" style="background: var(--accent); color: #121212;">
+                    <i class="fas fa-plus"></i> Novo Profissional
+                </button>
+            </div>
+
+            <div class="info-alert-box">
+                <i class="fas fa-file-zipper" style="color: var(--accent);"></i> <strong>Como publicar:</strong> clique em <strong>"Salvar e Gerar .ZIP Completo Atualizado"</strong> no final da página. O navegador baixa um .ZIP com o <code>dados.js</code> atualizado (barbeiros, serviços e textos), as fotos enviadas já convertidas em arquivos dentro de <code>imagens/</code> e os demais arquivos do site. Basta descompactar e substituir no seu projeto ou subir para o GitHub. <br><strong>Fotos:</strong> você pode colar um caminho como <code>imagens/barbeiro1.jpg</code> ou usar o botão de upload.</div>
+
+            <div class="form-group">
+                <label>Subtítulo da Seção Equipe:</label>
+                <input type="text" id="edit-team-subtitle" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Título Principal da Seção Equipe:</label>
+                <input type="text" id="edit-team-title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Descrição da Seção Equipe:</label>
+                <input type="text" id="edit-team-desc" class="form-control">
+            </div>
+
+            <h4 style="color: var(--accent); font-size: 0.95rem; margin: 20px 0 10px;">Barbeiros Cadastrados (Editar Foto, Textos, Salvar e Excluir):</h4>
+            
+            <div id="admin-team-list"></div>
+
+            <button id="btn-add-team-member-bottom" class="btn-new-custom">
+                <i class="fas fa-user-plus"></i> + Novo Barbeiro / Profissional
+            </button>
+        </div>
+
+        <!-- Seção 1: Identidade da Marca & Cabeçalho -->
+        <div class="form-section">
+            <h3><i class="fas fa-store"></i> Cabeçalho & Logo</h3>
+            <div class="form-group">
+                <label>Nome do Estabelecimento:</label>
+                <input type="text" id="edit-logo-title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Slogan/Subtítulo do Logo:</label>
+                <input type="text" id="edit-logo-sub" class="form-control">
+            </div>
+        </div>
+
+        <!-- Seção 2: Banner Principal (Hero) -->
+        <div class="form-section">
+            <h3><i class="fas fa-star"></i> Banner Principal (Início)</h3>
+            <div class="form-group">
+                <label>Slogan de Destaque (Badge superior):</label>
+                <input type="text" id="edit-hero-badge" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Título Principal (H1):</label>
+                <input type="text" id="edit-hero-title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Descrição do Banner:</label>
+                <textarea id="edit-hero-desc" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Texto do Botão de WhatsApp (Banner):</label>
+                <input type="text" id="edit-hero-btn-wa" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Texto do Botão "Como Chegar":</label>
+                <input type="text" id="edit-hero-btn-maps" class="form-control">
+            </div>
+        </div>
+
+        <!-- Seção 3: Sobre Nós -->
+        <div class="form-section">
+            <h3><i class="fas fa-users"></i> Seção Sobre Nós</h3>
+            <div class="form-group">
+                <label>Subtítulo da Seção:</label>
+                <input type="text" id="edit-about-subtitle" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Título Sobre Nós:</label>
+                <input type="text" id="edit-about-title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Primeiro Parágrafo:</label>
+                <textarea id="edit-about-p1" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Segundo Parágrafo:</label>
+                <textarea id="edit-about-p2" class="form-control"></textarea>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Destaque 1:</label>
+                    <input type="text" id="edit-feat-1" class="form-control">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Destaque 2:</label>
+                    <input type="text" id="edit-feat-2" class="form-control">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Destaque 3:</label>
+                    <input type="text" id="edit-feat-3" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção 4: Serviços Header -->
+        <div class="form-section">
+            <h3><i class="fas fa-list-check"></i> Títulos da Seção de Serviços</h3>
+            <div class="form-group">
+                <label>Subtítulo de Serviços:</label>
+                <input type="text" id="edit-services-subtitle" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Título de Serviços:</label>
+                <input type="text" id="edit-services-title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Descrição da Seção de Serviços:</label>
+                <textarea id="edit-services-desc" class="form-control"></textarea>
+            </div>
+        </div>
+
+        <!-- Seção 5: Gerenciamento dos Serviços -->
+        <div class="form-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0;"><i class="fas fa-cut"></i> Lista de Serviços & Preços</h3>
+                <button id="btn-add-new-service" class="btn-item-save" style="background: var(--accent); color: #121212;">
+                    <i class="fas fa-plus"></i> Novo Serviço
+                </button>
+            </div>
+            <div id="admin-services-list" style="margin-bottom: 15px;"></div>
+        </div>
+
+        <!-- Seção 6: Chamada de Agendamento (CTA) -->
+        <div class="form-section">
+            <h3><i class="fas fa-bullhorn"></i> Banner de Agendamento (Chamada Final)</h3>
+            <div class="form-group">
+                <label>Título da Chamada:</label>
+                <input type="text" id="edit-cta-title" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Texto da Chamada:</label>
+                <textarea id="edit-cta-desc" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Texto do Botão de WhatsApp (Chamada Final):</label>
+                <input type="text" id="edit-cta-btn-wa" class="form-control">
+            </div>
+        </div>
+
+        <!-- Seção 7: Contatos e Redes Sociais -->
+        <div class="form-section">
+            <h3><i class="fas fa-link"></i> Contatos & Redes Sociais</h3>
+            <div class="form-group">
+                <label>Número do WhatsApp (Formatado):</label>
+                <input type="text" id="edit-footer-phone" class="form-control" placeholder="(63) 98425-7185">
+            </div>
+            <div class="form-group">
+                <label>Número do WhatsApp (Só números com DDD):</label>
+                <input type="text" id="edit-whatsapp-raw" class="form-control" placeholder="5563984257185">
+            </div>
+            <div class="form-group">
+                <label>Horário de Funcionamento:</label>
+                <input type="text" id="edit-footer-hours" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Link do Instagram:</label>
+                <input type="text" id="edit-instagram" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Link do Facebook:</label>
+                <input type="text" id="edit-facebook" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Link do Google Maps (Como Chegar):</label>
+                <input type="text" id="edit-maps" class="form-control">
+            </div>
+        </div>
+
+        <!-- Ações do Admin -->
+        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
+            <button id="btn-save-admin-page" class="btn btn-whatsapp" style="width: 100%; font-size: 1.15rem; padding: 16px; font-weight: bold;">
+                <i class="fas fa-file-zipper"></i> Salvar e Gerar .ZIP Completo Atualizado
+            </button>
+
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 20px;">
+                <h4 style="color: var(--accent); margin-bottom: 10px;"><i class="fas fa-cloud-arrow-up"></i> Sincronização e Backup</h4>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">O botão principal acima salva no navegador e gera o <strong>.ZIP atualizado</strong> na hora. Se preferir o método manual, use o botão abaixo e cole o código dentro do arquivo <code>dados.js</code>.</p>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <button id="btn-export-json" class="btn btn-outline" style="flex: 1; font-size: 0.85rem;">
+                        <i class="fas fa-download"></i> Baixar Apenas Dados (.json)
+                    </button>
+                    <button id="btn-import-trigger" class="btn btn-outline" style="flex: 1; font-size: 0.85rem;">
+                        <i class="fas fa-upload"></i> Carregar Backup (.json)
+                    </button>
+                    <input type="file" id="input-import-json" accept=".json" style="display: none;">
+                </div>
+
+                <button id="btn-export-code" class="btn btn-outline" style="width: 100%; border-color: var(--accent); color: var(--accent); font-weight: bold; padding: 12px;">
+                    <i class="fas fa-code"></i> Copiar Apenas Código para dados.js
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dados.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const authContainer = document.getElementById('admin-auth-container');
+            const dashboard = document.getElementById('admin-dashboard');
+            const passwordInput = document.getElementById('admin-password');
+            const btnLogin = document.getElementById('btn-login-admin');
+            const loginError = document.getElementById('login-error');
+            const btnLogout = document.getElementById('btn-logout');
+
+            const ADMIN_PASSWORD = 'Maite@1409';
+
+            if (sessionStorage.getItem('jhony_admin_logged') === 'true') {
+                authContainer.style.display = 'none';
+                dashboard.style.display = 'block';
+                if (typeof loadAdminPageData === 'function') loadAdminPageData();
+            }
+
+            if (btnLogin) {
+                btnLogin.addEventListener('click', () => {
+                    if (passwordInput.value === ADMIN_PASSWORD) {
+                        sessionStorage.setItem('jhony_admin_logged', 'true');
+                        authContainer.style.display = 'none';
+                        dashboard.style.display = 'block';
+                        if (typeof loadAdminPageData === 'function') loadAdminPageData();
+                    } else {
+                        loginError.textContent = 'Senha incorreta!';
+                    }
+                });
+            }
+
+            if (btnLogout) {
+                btnLogout.addEventListener('click', () => {
+                    sessionStorage.removeItem('jhony_admin_logged');
+                    dashboard.style.display = 'none';
+                    authContainer.style.display = 'block';
+                    passwordInput.value = '';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

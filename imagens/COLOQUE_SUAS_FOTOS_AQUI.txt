@@ -1,0 +1,1 @@
+Guarde aqui as fotos dos barbeiros (ex: barbeiro1.jpg, barbeiro2.jpg) e informe no painel admin como 'imagens/barbeiro1.jpg'.

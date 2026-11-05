@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jhony Barber | Barbearia & Cuidado Masculino</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="header">
+        <div class="container nav-container">
+            <div class="logo">
+                <span class="logo-title" id="display-logo-title">JHONY BARBER</span>
+                <span class="logo-sub" id="display-logo-sub">J B • HOMENS TAMBÉM SE CUIDAM</span>
+            </div>
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#inicio">Início</a>
+                <a href="#equipe">Equipe</a>
+                <a href="#sobre">Sobre Nós</a>
+                <a href="#servicos">Serviços</a>
+                <a href="#contato" class="btn-nav">Agendar Horário</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="overlay"></div>
+        <div class="container hero-content">
+            <span class="badge" id="display-hero-badge">HOMENS TAMBÉM SE CUIDAM</span>
+            <h1 id="display-hero-title">Cuidados de alta qualidade com a atenção e o carinho que você merece</h1>
+            <p id="display-hero-desc">No Jhony Barber, unimos simplicidade, ambiente acolhedor e técnicas especializadas para renovar seu visual e sua autoestima.</p>
+            <div class="hero-btns">
+                <a href="https://wa.me/5563984257185?text=Olá!%20Gostaria%20de%20agendar%20um%20horário%20na%20barbearia." target="_blank" class="btn btn-whatsapp" id="btn-hero-whatsapp">
+                    <i class="fab fa-whatsapp"></i> <span id="display-hero-btn-wa">Agende pelo WhatsApp</span>
+                </a>
+                <a href="https://maps.google.com" id="btn-como-chegar-hero" target="_blank" class="btn btn-outline">
+                    <i class="fas fa-location-dot"></i> <span id="display-hero-btn-maps">Como Chegar</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Profissionais / Equipe -->
+    <section id="equipe" class="team">
+        <div class="container">
+            <div class="section-title">
+                <span class="section-subtitle" id="display-team-subtitle">NOSSOS TALENTOS</span>
+                <h2 id="display-team-title">Nossa Equipe de Barbeiros</h2>
+                <p id="display-team-desc">Profissionais altamente capacitados e com anos de estrada para garantir o seu melhor estilo.</p>
+            </div>
+
+            <div class="team-grid" id="team-grid-container">
+                <!-- Preenchido dinamicamente via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Nós -->
+    <section id="sobre" class="about">
+        <div class="container about-grid">
+            <div class="about-text">
+                <span class="section-subtitle" id="display-about-subtitle">CONHEÇA NOSSO ESPAÇO</span>
+                <h2 id="display-about-title">Um espaço feito pensando no seu bem-estar</h2>
+                <p id="display-about-p1">No Jhony Barber, acreditamos que cada detalhe importa. Desde a nossa decoração acolhedora até o atendimento atencioso, cada corte e procedimento é feito com muito carinho e dedicação.</p>
+                <p id="display-about-p2">Aqui você não vem apenas para cortar o cabelo ou fazer a barba — vem para relaxar, se sentir em casa e renovar a sua melhor versão.</p>
+                <div class="features">
+                    <div class="feature-item">
+                        <i class="fas fa-heart"></i>
+                        <span id="display-feat-1">Atendimento Atencioso</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-couch"></i>
+                        <span id="display-feat-2">Ambiente Acolhedor</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-cut"></i>
+                        <span id="display-feat-3">Excelência em Cada Detalhe</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços -->
+    <section id="servicos" class="services">
+        <div class="container">
+            <div class="section-title">
+                <span class="section-subtitle" id="display-services-subtitle">O QUE OFERECEMOS</span>
+                <h2 id="display-services-title">Nossos Serviços</h2>
+                <p id="display-services-desc">Confira nossos cuidados masculinos e infantis preparados especialmente para você.</p>
+            </div>
+
+            <div class="services-grid" id="services-grid-container">
+                <!-- Preenchido dinamicamente via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Chamada Agendamento (CTA) -->
+    <section class="cta-banner">
+        <div class="container cta-container">
+            <h2 id="display-cta-title">Pronto para renovar o visual?</h2>
+            <p id="display-cta-desc">Agende seu horário agora mesmo de forma simples e rápida pelo WhatsApp.</p>
+            <div class="cta-btns">
+                <a href="https://wa.me/5563984257185?text=Olá!%20Gostaria%20de%20agendar%20um%20horário%20na%20barbearia." target="_blank" class="btn btn-whatsapp btn-large" id="btn-cta-whatsapp">
+                    <i class="fab fa-whatsapp"></i> <span id="display-cta-btn-wa">AGENDAR JÁ O SEU HORÁRIO</span>
+                </a>
+                <a href="https://maps.google.com" id="btn-como-chegar-cta" target="_blank" class="btn btn-outline btn-large">
+                    <i class="fas fa-location-dot"></i> <span id="display-cta-btn-maps">COMO CHEGAR</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato / Rodapé -->
+    <footer id="contato" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3 id="display-footer-title">JHONY BARBER</h3>
+                <p id="display-footer-sub">Homens também se cuidam.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com" id="link-instagram" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com" id="link-facebook" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://maps.google.com" id="link-maps" target="_blank" title="Google Maps"><i class="fas fa-map-marker-alt"></i></a>
+                    <a href="https://wa.me/5563984257185" id="link-whatsapp-footer" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+                <p class="copyright">&copy; 2026 Jhony Barber. Todos os direitos reservados.</p>
+            </div>
+            <div class="footer-contact">
+                <h4>Contato & Agendamentos</h4>
+                <p><i class="fab fa-whatsapp"></i> <span id="display-footer-phone">(63) 98425-7185</span></p>
+                <p><i class="fas fa-clock"></i> <span id="display-footer-hours">Segunda a Sábado</span></p>
+                <p class="admin-trigger-container">
+                    <a href="admin.html" id="btn-admin-page" title="Painel Admin"><i class="fas fa-lock"></i> Áreas do Admin</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="dados.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
